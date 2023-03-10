@@ -5,9 +5,11 @@ import de.bcxp.challenge.FileContentReader.FileContentReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileNotFoundException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class WeatherDataHandler {
   private final static Logger logger = LogManager.getLogger();
@@ -16,14 +18,21 @@ public class WeatherDataHandler {
 
   public WeatherDataHandler(FileContentReader fileContentReader, String filePath) {
     this.fileContentReader = fileContentReader;
-    addToDataViaCsvWithFilePath(filePath);
+    try
+    {
+      addToDataViaCsvWithFilePath(filePath);
+    }
+    catch (FileNotFoundException fileNotFoundException)
+    {
+      logger.error("file with file path %s was not found", filePath);
+    }
   }
 
   public List<DayWeatherData> getWeatherDataList() {
     return weatherDataList;
   }
 
-  public void addToDataViaCsvWithFilePath(String filePath) {
+  public void addToDataViaCsvWithFilePath(String filePath) throws FileNotFoundException {
     List<DayWeatherData> weatherList = this.fileContentReader.readFileWithPath(filePath);
     setWeatherDataList(weatherList);
   }

@@ -1,10 +1,9 @@
 package de.bcxp.challenge.FileContentReader;
 
-import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
-
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public abstract class FileContentReader {
 
-  public abstract <T> List<T> readFileWithPath(String filePath);
+  public abstract <T> List<T> readFileWithPath(String filePath) throws FileNotFoundException;
 }

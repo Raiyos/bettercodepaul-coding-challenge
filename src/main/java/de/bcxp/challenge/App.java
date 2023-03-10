@@ -1,8 +1,11 @@
 package de.bcxp.challenge;
 
+import de.bcxp.challenge.DataHandler.CountryDataHandler;
 import de.bcxp.challenge.DataHandler.WeatherDataHandler;
+import de.bcxp.challenge.Entity.CountryData;
 import de.bcxp.challenge.Entity.DayWeatherData;
 import de.bcxp.challenge.FileContentReader.CsvFileContentReader;
+import de.bcxp.challenge.MappingStrategy.CountryMappingStrategy;
 import de.bcxp.challenge.MappingStrategy.WeatherMappingStrategy;
 
 /**
@@ -21,13 +24,18 @@ public final class App {
         final String weatherFilePath = "src/main/resources/de/bcxp/challenge/weather.csv";
         WeatherMappingStrategy<DayWeatherData> weatherMappingStrategy = new WeatherMappingStrategy<>();
         CsvFileContentReader<DayWeatherData> weatherFileContentReader =
-                new CsvFileContentReader<>(DayWeatherData.class, weatherMappingStrategy);
+                new CsvFileContentReader<>(DayWeatherData.class, weatherMappingStrategy, ',');
         WeatherDataHandler weatherDataHandler = new WeatherDataHandler(weatherFileContentReader, weatherFilePath);
-
         int dayWithSmallestTempSpread = weatherDataHandler.getDayWithLowestTemperatureSpread();     // Your day analysis function call …
         System.out.printf("Day with smallest temperature spread: %d%n", dayWithSmallestTempSpread);
 
-        String countryWithHighestPopulationDensity = "Some country"; // Your population density analysis function call …
+        final String countryFilePath = "src/main/resources/de/bcxp/challenge/countries.csv";
+        CountryMappingStrategy<CountryData> countryMappingStrategy = new CountryMappingStrategy<>();
+        CsvFileContentReader<CountryData> countryDataCsvFileContentReader =
+                new CsvFileContentReader<>(CountryData.class, countryMappingStrategy, ';');
+        CountryDataHandler countryDataHandler = new CountryDataHandler(countryDataCsvFileContentReader, countryFilePath);
+        String countryWithHighestPopulationDensity = countryDataHandler.getCountryWithHighestPopulationDensity(); // Your population density analysis function call …
         System.out.printf("Country with highest population density: %s%n", countryWithHighestPopulationDensity);
+
     }
 }
