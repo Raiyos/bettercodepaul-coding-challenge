@@ -50,7 +50,6 @@ public class CountryDataHandler {
             .stream()
             .max(Comparator.comparing(CountryData::getPopulationDensity))
             .orElseThrow(NoSuchElementException::new);
-    System.out.println(getCountryDataList().size());
     return countryWithHighestPopDensity.getName();
   }
 }
